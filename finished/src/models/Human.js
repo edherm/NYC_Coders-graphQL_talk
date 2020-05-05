@@ -6,11 +6,6 @@ const humanSchema = new Schema({
 		trim: true,
 		required: 'Give your human a name 💁🏽‍♂️',
 	},
-	dogs: [{
-		type: Schema.Types.ObjectId,
-		ref: 'Dog',
-		required: false,
-	}],
 });
 
 humanSchema.pre('findOne', () => {

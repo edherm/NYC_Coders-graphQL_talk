@@ -6,8 +6,6 @@ import Query from './resolvers/Query';
 import Mutation from './resolvers/Mutation';
 import Dog from './resolvers/Dog';
 import Human from './resolvers/Human';
-import DogModel from './models/Dog';
-import HumanModel from './models/Human';
 import makeDataLoaders from './lib/makeDataLoaders';
 
 // import environmental variables from our variables.env file
@@ -29,14 +27,12 @@ mongoose.connection.on('error', (err) => {
 const server = new ApolloServer({
 	typeDefs,
 	resolvers: {
-		Query, Mutation, Dog, Human,
-	},
-	engine: {
-		apiKey: process.env.APOLLO_API_KEY,
+		Query,
+		Mutation,
+		Dog,
+		Human,
 	},
 	context: () => ({
-		dogs: DogModel,
-		humans: HumanModel,
 		dataLoaders: makeDataLoaders(),
 	}),
 });

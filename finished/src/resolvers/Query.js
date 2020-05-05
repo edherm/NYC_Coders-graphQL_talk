@@ -10,19 +10,17 @@ export default {
 
 	async dogsWhere(parent, args) {
 		const { name, breed } = args;
-		const id = new Types.ObjectId(args.id);
 
 		const dogs = await Dog.find({
 			$or: [
 				{ name },
 				{ breed },
-				{ _id: id },
 			],
 		});
 		return dogs;
 	},
 
-	async dogWhereID(parent, args) {
+	async dogWhereId(parent, args) {
 		const id = new Types.ObjectId(args.id);
 		const dog = await Dog.findOne({ _id: id });
 		return dog;

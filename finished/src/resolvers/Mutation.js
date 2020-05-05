@@ -1,53 +1,41 @@
 import { Types } from 'mongoose';
+import Dog from '../models/Dog';
+import Human from '../models/Human';
 
 export default {
-	async createHuman(parent, args, ctx) {
-		const human = await ctx.humans.create({ name: args.name });
+	async createHuman(parent, args) {
+		const human = await Human.create({ name: args.name });
 		return human;
 	},
 
-	async createDog(parent, args, ctx) {
-		const { name, breed } = args;
-		let human = null;
-
-		if (args.human) {
-			human = await ctx.humans.findOne(args.human);
-		}
-
-		const dog = await ctx.dogs.create({ name, breed, human });
-		return dog;
-	},
-
-	async updateDog(parent, args, ctx) {
-		const id = new Types.ObjectId(args.id);
-		let human = null;
-
-		if (args.human) {
-			const humanId = new Types.ObjectId(args.human.id);
-
-			human = await ctx.humans.findOne({
-				$or: [
-					{ name: args.human.name },
-					{ _id: humanId },
-				],
-			});
-		}
-
-		const updateOptions = { ...args };
-		delete updateOptions.human;
-		delete updateOptions.id;
-
+	async createDog(parent, { name, breed, human }) {
+		let humanId;
 		if (human) {
-			updateOptions.human = human;
+			humanId = new Types.ObjectId(human.id);
 		}
 
-		const dog = await ctx.dogs.findOneAndUpdate({ _id: id }, updateOptions, { new: true });
+		const dog = await Dog.create({ name, breed, human: humanId });
 		return dog;
 	},
 
-	async deleteDog(parent, args, ctx) {
+	async updateDog(parent, {
+		id, human, name, breed,
+	}) {
+		const updateOptions = {};
+		if (name) updateOptions.name = name;
+		if (breed) updateOptions.breed = breed;
+		if (human) {
+			updateOptions.human = new Types.ObjectId(human.id);
+		}
+
+		const dogId = new Types.ObjectId(id);
+		const dog = await Dog.findOneAndUpdate({ _id: dogId }, updateOptions, { new: true });
+		return dog;
+	},
+
+	async deleteDog(parent, args) {
 		const id = new Types.ObjectId(args.id);
-		const dog = await ctx.dogs.findByIdAndDelete(id);
+		const dog = await Dog.findByIdAndDelete(id);
 		return dog;
 	},
 };

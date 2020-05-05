@@ -9,7 +9,6 @@ const typeDefs = gql`
 
 	input HumanInput {
 		id: ID
-		name: String
 	}
 
 	type Dog {
@@ -22,8 +21,8 @@ const typeDefs = gql`
 	type Query {
 		allHumans: [Human]!
 		allDogs: [Dog]!
-		dogsWhere(id: ID, name: String, breed: String): [Dog]!
-		dogWhereID(id: ID!): Dog
+		dogWhereId(id: ID!): Dog
+		dogsWhere(name: String, breed: String): [Dog]!
 	}
 
 	type Mutation {
