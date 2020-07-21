@@ -19,7 +19,7 @@
 	"homepage": "https://github.com/mrkutly/graphql-talk#readme",
 	"dependencies": {
 		"@babel/runtime": "^7.9.2",
-		"apollo-server": "^2.12.0",
+		"apollo-server": "^2.14.2",
 		"dotenv": "^8.2.0",
 		"graphql": "^15.0.0",
 		"mongoose": "^5.9.12",
